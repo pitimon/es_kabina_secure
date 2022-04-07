@@ -21,8 +21,9 @@ kubectl apply  -f kibana-configmap.yaml \
 -f kibana-service.yaml \
 -f kibana-deployment.yaml 
 
-kubectl apply  -f fb-role.yaml \
--f fb-rolebind.yaml \
--f fb-service.yaml \
+
+kubectl create -f fb-role.yaml 
+kubectl create -f fb-rolebind.yaml
+kubectl apply -f fb-service.yaml \
 -f fb-configmap.yaml \
 -f fb-ds.yaml
