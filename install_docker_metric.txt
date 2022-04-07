@@ -1,0 +1,24 @@
+# kabana20 
+NODE=35
+
+sudo scp /etc/metricbeat/metricbeat.yml rancher@10.1.4.$NODE:/home/rancher/metricbeat.yml
+
+ssh rancher@10.1.4.$NODE -f \
+'curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.3.0-amd64.deb && \
+sudo dpkg -i metricbeat-7.3.0-amd64.deb && \
+echo completed_and_nextstep'
+
+ssh rancher@10.1.4.$NODE -f 'sudo cp -f /home/rancher/metricbeat.yml /etc/metricbeat/. && \
+sudo metricbeat modules enable docker && \
+sudo metricbeat setup && \
+sudo service metricbeat start && echo completed'
+
+
+  hosts: ["client2022.b.ipv9.xyz:443"]
+
+  # Optional protocol and basic auth credentials.
+  protocol: "https"
+  username: "elastic"
+  password: "TSBuD7gxQBR07j6Csoqk"
+
+ host: "https://kibana22.b.ipv9.xyz:443"
