@@ -1,0 +1,28 @@
+kubectl apply  -f es-master-configmap.yaml \
+-f es-master-service.yaml \
+-f es-master-deployment.yaml
+
+kubectl apply -f es-data-configmap.yaml \
+-f es-data-service.yaml \
+-f es-data-statefulset.yaml
+
+kubectl apply -f es-client-configmap.yaml \
+-f es-client-service.yaml \
+-f es-client-deployment.yaml
+
+kubectl exec -it $(kubectl get pods -n kube-logging | \
+grep elasticsearch-client | sed -n 1p | \
+awk '{print $1}') -n kube-logging -- bin/elasticsearch-setup-passwords auto -b
+
+kubectl create secret generic elasticsearch-pw-elastic \
+-n kube-logging --from-literal password=TSBuD7gxQBR07j6Csoqk
+
+kubectl apply  -f kibana-configmap.yaml \
+-f kibana-service.yaml \
+-f kibana-deployment.yaml 
+
+kubectl apply  -f fb-role.yaml \
+-f fb-rolebind.yaml \
+-f fb-service.yaml \
+-f fb-configmap.yaml \
+-f fb-ds.yaml
