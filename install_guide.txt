@@ -15,7 +15,7 @@ grep elasticsearch-client | sed -n 1p | \
 awk '{print $1}') -n kube-logging -- bin/elasticsearch-setup-passwords auto -b
 
 kubectl create secret generic elasticsearch-pw-elastic \
--n kube-logging --from-literal password=TSBuD7gxQBR07j6Csoqk
+-n kube-logging --from-literal password=A152qoXFlWkgEx66dUC8
 
 kubectl apply  -f kibana-configmap.yaml \
 -f kibana-service.yaml \
