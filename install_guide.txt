@@ -1,5 +1,6 @@
 # 
 # change all namespace to your name before follow lab //เน้น เพราะชื่อ namespace จากตัวอย่างนี้ จะใช้ซ้าใน cluster ไม่ได้
+# Create your namespace on project by rancher web ui before
 #
 
 step 1:
