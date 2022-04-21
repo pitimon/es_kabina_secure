@@ -7,7 +7,7 @@ metadata:
     app: elasticsearch
     role: master
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: elasticsearch

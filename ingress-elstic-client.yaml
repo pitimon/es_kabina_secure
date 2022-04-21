@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-es-client
+  namespace: kube-logging
+spec:
+  rules:
+  - host: it-es2022.k8s.ipv9.xyz
+    http:
+      paths:
+      - backend:
+          service:
+            name: elasticsearch-client
+            port:
+              number: 9200
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer: {}

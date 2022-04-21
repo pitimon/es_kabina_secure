@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-kibana
+  namespace: kube-logging
+spec:
+  rules:
+  - host: it-kibana.k8s.ipv9.xyz
+    http:
+      paths:
+      - backend:
+          service:
+            name: kibana
+            port:
+              number: 5601
+        path: /
+        pathType: Prefix

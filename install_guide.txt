@@ -2,32 +2,82 @@
 # change all namespace to your name before follow lab //เน้น เพราะชื่อ namespace จากตัวอย่างนี้ จะใช้ซ้าใน cluster ไม่ได้
 #
 
+step 1:
 kubectl apply  -f es-master-configmap.yaml \
 -f es-master-service.yaml \
 -f es-master-deployment.yaml
+
+# status check
+% kubectl rollout status -n kube-logging deployment elasticsearch-master
+# waiting for container started and next step
+
+step 2:
+# es-data use persistence-volumn for storageClass on this cluster (longhorn/ 30GB per pod))
 
 kubectl apply -f es-data-configmap.yaml \
 -f es-data-service.yaml \
 -f es-data-statefulset.yaml
 
+# status check 
+% kubectl rollout status -n kube-logging statefulset elasticsearch-data 
+# waiting for container started and next step
+
+Step 3:
 kubectl apply -f es-client-configmap.yaml \
 -f es-client-service.yaml \
 -f es-client-deployment.yaml
 
+# check
+% kubectl rollout status -n kube-logging deployment elasticsearch-client
+# waiting for container started and next step
+
+Step 4:
 kubectl exec -it $(kubectl get pods -n kube-logging | \
 grep elasticsearch-client | sed -n 1p | \
 awk '{print $1}') -n kube-logging -- bin/elasticsearch-setup-passwords auto -b
 
-kubectl create secret generic elasticsearch-pw-elastic \
--n kube-logging --from-literal password=A152qoXFlWkgEx66dUC8
+# from output screen copy elastic's PASSWORD to change "password=" next step
 
+Step 5:
+kubectl create secret generic elasticsearch-pw-elastic \
+-n kube-logging --from-literal password=[Change it for step4]
+
+
+Step 6:
 kubectl apply  -f kibana-configmap.yaml \
 -f kibana-service.yaml \
 -f kibana-deployment.yaml 
 
+# Status check
+% kubectl rollout status -n kube-logging deployment kibana
+# don't worry "not finished" because loadbalane service with external IP parametes
+# re-check with
+%kubectl get pod -n kube-logging
+# check kibana pod status is running is ok.
+###
 
-kubectl create -f fb-role.yaml 
-kubectl create -f fb-rolebind.yaml
-kubectl apply -f fb-service.yaml \
--f fb-configmap.yaml \
--f fb-ds.yaml
+
+Step 7:
+# Change hostname on yaml file before deployment
+kubectl create -f ingress-kibana.yaml
+# you can test by
+# open url https://it-kibana.k8s.ipv9.xyz on browser //This's hostname for demo only
+# user: elastic and password from step 4
+
+Step 8:
+# Change hostname on yaml file before deployment
+kubectl create -f ingress-kibana.yaml
+# you can test by
+# open url https://it-es2022.k8s.ipv9.xyz/ on browser //This's hostname for demo only
+# user: elastic and password from step 4
+
+Completed:
+You had kibana and elasticSearch service access by url from step 7,8
+
+Good Luck.
+
+
+
+
+
+
