@@ -1,3 +1,7 @@
+# 
+# change all namespace to your name before follow lab //เน้น เพราะชื่อ namespace จากตัวอย่างนี้ จะใช้ซ้าใน cluster ไม่ได้
+#
+
 kubectl apply  -f es-master-configmap.yaml \
 -f es-master-service.yaml \
 -f es-master-deployment.yaml
